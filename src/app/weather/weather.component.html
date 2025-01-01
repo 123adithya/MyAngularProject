@@ -1,0 +1,23 @@
+<div class="container m-2">
+    <div class="recent-locations">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" #input placeholder="Type city name" aria-label="City name" aria-describedby="button-addon2">
+          <app-button [buttonName]= "'+'" [buttonType]="ButtonTypeEnum.OutlineSecondary" (emitButtonClickEvent)="getWeatherReport(input.value); input.value=''" id="button-addon2"></app-button>
+        </div>
+        <div>
+          <div class="location-item" *ngFor="let cityWeather of citysWeatherReport; let i = index">
+            <app-button [buttonName]= "formatWeatherString(cityWeather)" [buttonType]="ButtonTypeEnum.Light" [buttonSize]="'sm'" (emitButtonClickEvent)="getWeatherForcast(cityWeather)"></app-button>
+            <app-button [buttonName]= "'⟳'" [buttonType]="ButtonTypeEnum.OutlineSecondary" (emitButtonClickEvent)="getWeatherReport(cityWeather.name, true)" [buttonSize]="'sm'"></app-button>
+            <app-button [buttonName]= "'x'" [buttonType]="ButtonTypeEnum.OutlineDanger" [buttonSize]="'sm'" (emitButtonClickEvent)="removeWeatherReport(cityWeather.name)"></app-button>
+        </div>
+        </div>
+        <app-button [buttonName]= "'Clear All'" [buttonType]="ButtonTypeEnum.Danger" (emitButtonClickEvent)="removeCityReports()"></app-button>
+    </div>
+    <div *ngIf="weatherData">
+      <app-weather-forcast class="w-100 h-100" [weatherData]="weatherData"></app-weather-forcast>
+    </div>
+    <div *ngIf="!weatherData" class="w-100 h-100">
+      <H1> Add City's / Countries and Select it </H1>
+      <h4>London, Vijayawada, Tirupati, Hyderabad</h4>
+    </div>
+</div>

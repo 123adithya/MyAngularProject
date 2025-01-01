@@ -1,0 +1,14 @@
+<div class="container mt-4">
+    <div class="d-flex mb-3">
+      <app-button [buttonName] = "CounterAction.Reset" [buttonType] = "ButtonTypeEnum.Primary" class="btn-reset me-2" (emitButtonClickEvent)="performCounterAction(CounterAction.Reset)"></app-button>
+      <app-button [buttonName] = "CounterAction.Add" [buttonType] = "ButtonTypeEnum.Primary" class="btn-add" (emitButtonClickEvent)="performCounterAction(CounterAction.Add)"></app-button>
+    </div>
+    <div id="counters">
+      <div class="counter-row" *ngFor="let counterValue of counterListArray; let i = index">
+        <app-badge [badgeValue]="counterValue"></app-badge>
+        <app-button [buttonName] = "CounterAction.Increment" (emitButtonClickEvent)="performCounterAction(CounterAction.Increment, i)"></app-button>
+        <app-button [buttonName] = "CounterAction.Decrement" (emitButtonClickEvent)="performCounterAction(CounterAction.Decrement, i)"></app-button>
+        <app-button [buttonName] = "CounterAction.Delete" [buttonType] = "ButtonTypeEnum.Danger" (emitButtonClickEvent)="performCounterAction(CounterAction.Delete, i)"></app-button>
+      </div>
+    </div>
+  </div>

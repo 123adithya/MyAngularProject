@@ -1,0 +1,23 @@
+<div class="weather-forecast">
+  <h1>{{ weatherData ? weatherData.city!.name : 'Unknown City' }}</h1>
+
+  <div class="current-weather">
+    <div class="icon">
+      <img [src]="getWeatherIconUrl(weatherData ? weatherData.list[0]!.weather[0]!.icon : 'default-icon.png')" alt="Weather Icon" />
+    </div>
+    <div class="details">
+      <p>{{ weatherData ? weatherData.list[0]!.main!.temp : 0 }}°C</p>
+      <p>{{ weatherData ? weatherData.list[0]!.weather[0]!.description : 'No description available' }}</p>
+      <p>Wind: {{ weatherData ? weatherData.list[0]!.wind!.speed : 0 }} m/s, {{ weatherData? weatherData.list[0]!.wind!.deg : 0 }}°</p>
+      <p>Pressure: {{ weatherData ? weatherData.list[0]!.main!.pressure : 0 }} hPa</p>
+    </div>
+  </div>
+
+  <div class="forecast">
+    <div class="day" *ngFor="let item of getDailyForecast()">
+      <p>{{ item?.date || 'No date available' }}</p>
+      <img [src]="getWeatherIconUrl(item.icon ? item.icon : 'default-icon.png')" alt="Weather Icon" />
+      <p>{{ convertToCelsius(item?.temp || 0) }}°C</p>
+    </div>
+  </div>
+</div>

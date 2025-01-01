@@ -1,0 +1,48 @@
+.weather-forecast {
+    font-family: Arial, sans-serif;
+    color: #333;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-grow: 1;
+  }
+  
+  .weather-forecast h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .current-weather {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .current-weather .icon img {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .current-weather .details p {
+    margin: 5px 0;
+  }
+  
+  .forecast {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .forecast .day {
+    text-align: center;
+  }
+  
+  .forecast .day p {
+    margin: 5px 0;
+  }
+  
