@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { WeatherCity } from '../reusabel-components/weather-city.interface';
 
 @Injectable({
@@ -20,7 +20,14 @@ export class WeatherUpdateService {
       q: cityName,
       appid: this.apiKey
     };
-    return this.httpClient.get(this.apiWeatherUrl, { params });
+    return this.httpClient.get(this.apiWeatherUrl, { params }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          console.error('City not found');
+        }
+        return throwError(error);
+      })
+    );;
   }
 
   getWeatherReportForcast(city: WeatherCity): Observable<any> {

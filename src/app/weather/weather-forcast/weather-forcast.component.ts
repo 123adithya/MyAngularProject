@@ -1,15 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { WeatherForcast } from '../../reusabel-components/weather-forcast.interface';
 import { CommonModule } from '@angular/common';
+import { ButtonComponent } from '../../reusabel-components/button/button.component';
+import { ButtonTypeEnum } from '../../reusabel-components/enum';
 
 @Component({
   selector: 'app-weather-forcast',
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonComponent],
   templateUrl: './weather-forcast.component.html',
   styleUrl: './weather-forcast.component.scss'
 })
 export class WeatherForcastComponent implements OnInit {
+  ButtonTypeEnum = ButtonTypeEnum;
   @Input() weatherData!: WeatherForcast;
+
+  @Output() refreshWeatherForcastEmitter = new EventEmitter();
 
   ngOnInit(): void {}
 
@@ -33,5 +38,9 @@ export class WeatherForcastComponent implements OnInit {
 
   convertToCelsius(kelvin: number): string {
     return (kelvin - 273.15).toFixed(2);
+  }
+
+  refreshWeatherForcast(){
+   this.refreshWeatherForcastEmitter.emit();
   }
 }

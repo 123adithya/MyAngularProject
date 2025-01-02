@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ButtonTypeEnum } from '../reusabel-components/enum';
 import { ButtonComponent } from '../reusabel-components/button/button.component';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,11 @@ import { WeatherCity } from '../reusabel-components/weather-city.interface';
 import { WeatherForcastComponent } from './weather-forcast/weather-forcast.component';
 import { WeatherForcast } from '../reusabel-components/weather-forcast.interface';
 import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { WeatherState } from '../ngrx-store/weather/weather.state';
+import { NavigationStart, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { setLastWeatherValue } from '../ngrx-store/weather/weather.actions';
 
 @Component({
   selector: 'app-weather',
@@ -16,15 +21,28 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './weather.component.html',
   styleUrl: './weather.component.scss'
 })
-export class WeatherComponent {
+export class WeatherComponent implements OnInit{
 
   ButtonTypeEnum = ButtonTypeEnum;
 
   citysWeatherReport: WeatherCity[] = [];
+  selectedWeatherCity!: WeatherCity;
 
   weatherData!: WeatherForcast | null;
+  lastWeatherValues$!: Observable<WeatherCity[] | null>;
 
-  constructor(private weatherUpdateService: WeatherUpdateService){}
+
+  constructor(private weatherUpdateService: WeatherUpdateService, private store: Store<{ weather: WeatherState }>, private router: Router,){}
+
+  ngOnInit(): void {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.store.dispatch(setLastWeatherValue({ weather: this.citysWeatherReport }));
+      }
+    });
+    this.lastWeatherValues$ = this.store.select((state) => state.weather?.lastWeatherValues);
+    this.lastWeatherValues$?.subscribe(values => this.citysWeatherReport = [...values || []]);
+  }
 
   getWeatherReport(value: string, refresh: boolean = false): void {
     if(this.citysWeatherReport.findIndex((report) => report.name === value) > -1){
@@ -42,22 +60,26 @@ export class WeatherComponent {
           if (this.citysWeatherReport.length > 8) {
             this.citysWeatherReport.pop();
         }
+        this.store.dispatch(setLastWeatherValue({ weather: this.citysWeatherReport }));
         }
       },
       (error) => {
         console.error('Error fetching weather:', error);
+        alert('Error fetching weather: City/ Country not found');
       }
     );
   }
 
 
   getWeatherForcast(weather: WeatherCity){
+    this.selectedWeatherCity = weather;
     this.weatherUpdateService.getWeatherReportForcast(weather).subscribe(
       (data: WeatherForcast) => {
         this.weatherData = data;
       },
       (error) => {
-        console.error('Error fetching weather:', error);
+        console.error('Error fetching forcast:', error);
+        alert('Error fetching forcast:' + error);
       }
     );
   }
@@ -85,6 +107,16 @@ export class WeatherComponent {
   }
 
   removeCityReports(){
-    this.citysWeatherReport = [];
+    if(this.citysWeatherReport.length <= 0){
+      alert("No data to remove");
+    }else{
+      this.citysWeatherReport = [];
+      this.weatherData = null;
+      alert("Weather Reports cleard");
+    }
+  }
+
+  refreashWeatherForcast(){
+    this.getWeatherForcast(this.selectedWeatherCity);
   }
 }
