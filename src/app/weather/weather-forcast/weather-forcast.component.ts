@@ -3,6 +3,11 @@ import { WeatherForcast } from '../../reusabel-components/weather-forcast.interf
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../reusabel-components/button/button.component';
 import { ButtonTypeEnum } from '../../reusabel-components/enum';
+import { Store } from '@ngrx/store';
+import { NavigationStart, Router } from '@angular/router';
+import { setLastWeatherForcastValue } from '../../ngrx-store/weather-forcast/weather-forcast.actions';
+import { Observable } from 'rxjs';
+import { WeatherForcastState } from '../../ngrx-store/weather-forcast/weather-forcast.state';
 
 @Component({
   selector: 'app-weather-forcast',
@@ -12,11 +17,23 @@ import { ButtonTypeEnum } from '../../reusabel-components/enum';
 })
 export class WeatherForcastComponent implements OnInit {
   ButtonTypeEnum = ButtonTypeEnum;
-  @Input() weatherData!: WeatherForcast;
+  @Input() weatherData!: WeatherForcast | null;
 
   @Output() refreshWeatherForcastEmitter = new EventEmitter();
 
-  ngOnInit(): void {}
+  lastWeatherForcastValues$!: Observable<WeatherForcast | null>;
+
+  constructor(private store: Store<{ weatherForcast: WeatherForcastState }>, private router: Router,){}
+
+  ngOnInit(): void {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        if(this.weatherData)this.store.dispatch(setLastWeatherForcastValue({ weatherForcast: this.weatherData }));
+      }
+    });
+    this.lastWeatherForcastValues$ = this.store.select((state) => state.weatherForcast?.lastWeatherForcastValues);
+    this.lastWeatherForcastValues$?.subscribe(value => { if(value)this.weatherData = value });
+  }
 
   getWeatherIconUrl(icon: string | undefined): string {
     return icon ? `https://openweathermap.org/img/wn/${icon}.png` : '';

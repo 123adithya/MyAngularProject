@@ -13,11 +13,7 @@
         </div>
         <app-button [buttonName]= "'Clear All'" [buttonType]="ButtonTypeEnum.Danger" (emitButtonClickEvent)="removeCityReports()"></app-button>
     </div>
-    <div *ngIf="weatherData">
+    <div>
       <app-weather-forcast class="w-100 h-100" [weatherData]="weatherData" (refreshWeatherForcastEmitter)="refreashWeatherForcast()"></app-weather-forcast>
-    </div>
-    <div *ngIf="!weatherData" class="w-100 h-100">
-      <h1> Add City's / Countries and Select it </h1>
-      <h4>London, Vijayawada, Tirupati, Hyderabad.....</h4>
     </div>
 </div>

@@ -112,6 +112,7 @@ export class WeatherComponent implements OnInit{
     }else{
       this.citysWeatherReport = [];
       this.weatherData = null;
+      this.store.dispatch(setLastWeatherValue({ weather: this.citysWeatherReport }));
       alert("Weather Reports cleard");
     }
   }

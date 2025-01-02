@@ -1,4 +1,4 @@
-<div class="weather-forecast">
+<div *ngIf="weatherData" class="weather-forecast">
   <div class="row-display">
     <h1>{{ weatherData ? weatherData.city!.name : 'Unknown City' }}</h1>
     <app-button [buttonName]= "'⟳'" [buttonType]="ButtonTypeEnum.OutlineSecondary" (emitButtonClickEvent)="refreshWeatherForcast()" [buttonSize]="'sm'"></app-button>
@@ -23,4 +23,9 @@
       <p>{{ convertToCelsius(item?.temp || 0) }}°C</p>
     </div>
   </div>
+</div>
+
+<div *ngIf="!weatherData" class="w-100 h-100">
+  <h1> Add City's / Countries and Select it </h1>
+  <h4>London, Vijayawada, Tirupati, Hyderabad.....</h4>
 </div>
