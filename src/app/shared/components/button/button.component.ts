@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ButtonSize, ButtonStyle } from '../types';
+import { ButtonSize, ButtonStyle } from '../../../core/models/types';
 
 @Component({
   selector: 'app-button',
-  imports: [],
   templateUrl: './button.component.html',
   styleUrl: './button.component.scss'
 })

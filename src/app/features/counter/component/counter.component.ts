@@ -1,18 +1,17 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ButtonComponent } from '../reusabel-components/button/button.component';
-import { BadgeComponent } from '../reusabel-components/badge/badge.component';
-import { CounterAction, ButtonTypeEnum } from '../reusabel-components/enum';
 import { CommonModule } from '@angular/common';
-import { CounterNumberService } from '../services/counter-number.service';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { CounterState } from '../ngrx-store/counter/counter.state';
 import { NavigationStart, Router } from '@angular/router';
-import { setLastCounterValue } from '../ngrx-store/counter/counter.actions';
+import { SharedModule } from '../../../shared/shared.module';
+import { ButtonTypeEnum, CounterAction } from '../../../core/models/enum';
+import { CounterNumberService } from '../../../core/services/counter-number.service';
+import { CounterState } from '../store/counter.state';
+import { setLastCounterValue } from '../store/counter.actions';
 
 @Component({
   selector: 'app-counter',
-  imports: [ButtonComponent, BadgeComponent, CommonModule],
+  imports: [SharedModule, CommonModule],
   templateUrl: './counter.component.html',
   styleUrl: './counter.component.scss',
  })

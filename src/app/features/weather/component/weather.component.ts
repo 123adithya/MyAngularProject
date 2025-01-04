@@ -1,22 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ButtonTypeEnum } from '../reusabel-components/enum';
-import { ButtonComponent } from '../reusabel-components/button/button.component';
-import { CommonModule } from '@angular/common';
-import { WeatherUpdateService } from '../services/weather-update.service';
-import { HttpClientModule } from '@angular/common/http';
-import { WeatherCity } from '../reusabel-components/weather-city.interface';
-import { WeatherForcastComponent } from './weather-forcast/weather-forcast.component';
-import { WeatherForcast } from '../reusabel-components/weather-forcast.interface';
-import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { WeatherState } from '../ngrx-store/weather/weather.state';
 import { NavigationStart, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { setLastWeatherValue } from '../ngrx-store/weather/weather.actions';
+import { ButtonTypeEnum } from '../../../core/models/enum';
+import { WeatherCity } from '../../../core/models/weather-city.interface';
+import { WeatherForcast } from '../../../core/models/weather-forcast.interface';
+import { WeatherUpdateService } from '../../../core/services/weather-update.service';
+import { WeatherState } from '../store/weather/weather.state';
+import { setLastWeatherValue } from '../store/weather/weather.actions';
+import { WeatherForcastComponent } from '../weather-forcast/weather-forcast.component';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-weather',
-  imports: [ButtonComponent, WeatherForcastComponent, CommonModule, HttpClientModule, FormsModule],
+  imports: [WeatherForcastComponent, SharedModule],
   providers: [WeatherUpdateService],
   templateUrl: './weather.component.html',
   styleUrl: './weather.component.scss'
@@ -26,22 +23,22 @@ export class WeatherComponent implements OnInit{
   ButtonTypeEnum = ButtonTypeEnum;
 
   citysWeatherReport: WeatherCity[] = [];
-  selectedWeatherCity!: WeatherCity;
+  selectedWeatherCity!: WeatherCity | null;
 
   weatherData!: WeatherForcast | null;
-  lastWeatherValues$!: Observable<WeatherCity[] | null>;
-
+  lastWeatherValues$!: Observable<{ cities: WeatherCity[] | null, selectedCity: WeatherCity | null } | null>;
+  lastselectedWeatherCity$!: Observable<WeatherCity | null>;
 
   constructor(private weatherUpdateService: WeatherUpdateService, private store: Store<{ weather: WeatherState }>, private router: Router,){}
 
   ngOnInit(): void {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
-        this.store.dispatch(setLastWeatherValue({ weather: this.citysWeatherReport }));
+        this.store.dispatch(setLastWeatherValue({ weather: this.citysWeatherReport, selectedWeather: this.selectedWeatherCity! }));
       }
     });
-    this.lastWeatherValues$ = this.store.select((state) => state.weather?.lastWeatherValues);
-    this.lastWeatherValues$?.subscribe(values => this.citysWeatherReport = [...values || []]);
+    this.lastWeatherValues$ = this.store.select((state) => { return {cities : state.weather?.lastWeatherValues, selectedCity: state.weather?.lastSelectedWeather}});
+    this.lastWeatherValues$?.subscribe(values => {this.citysWeatherReport = [...values?.cities || []], this.selectedWeatherCity = values?.selectedCity ? values.selectedCity : null});
   }
 
   getWeatherReport(value: string, refresh: boolean = false): void {
@@ -60,7 +57,7 @@ export class WeatherComponent implements OnInit{
           if (this.citysWeatherReport.length > 8) {
             this.citysWeatherReport.pop();
         }
-        this.store.dispatch(setLastWeatherValue({ weather: this.citysWeatherReport }));
+        this.store.dispatch(setLastWeatherValue({ weather: this.citysWeatherReport, selectedWeather: this.selectedWeatherCity!}));
         }
       },
       (error) => {
@@ -76,6 +73,7 @@ export class WeatherComponent implements OnInit{
     this.weatherUpdateService.getWeatherReportForcast(weather).subscribe(
       (data: WeatherForcast) => {
         this.weatherData = data;
+        this.store.dispatch(setLastWeatherValue({ weather: this.citysWeatherReport, selectedWeather: this.selectedWeatherCity! }));
       },
       (error) => {
         console.error('Error fetching forcast:', error);
@@ -112,12 +110,12 @@ export class WeatherComponent implements OnInit{
     }else{
       this.citysWeatherReport = [];
       this.weatherData = null;
-      this.store.dispatch(setLastWeatherValue({ weather: this.citysWeatherReport }));
+      this.store.dispatch(setLastWeatherValue({ weather: this.citysWeatherReport, selectedWeather: this.selectedWeatherCity! }));
       alert("Weather Reports cleard");
     }
   }
 
   refreashWeatherForcast(){
-    this.getWeatherForcast(this.selectedWeatherCity);
+    this.getWeatherForcast(this.selectedWeatherCity!);
   }
 }

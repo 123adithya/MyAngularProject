@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { WeatherCity } from '../../reusabel-components/weather-city.interface';
+import { WeatherCity } from '../../../../core/models/weather-city.interface';
 
 export const setLastWeatherValue = createAction(
   '[Weather Component] Set Last WeatherValues',
-  props<{ weather: WeatherCity[] }>()
+  props<{ weather: WeatherCity[], selectedWeather: WeatherCity}>()
 );
 
 export const resetLastWeatherValue = createAction('[Weather Component] Reset Last WeatherValues');

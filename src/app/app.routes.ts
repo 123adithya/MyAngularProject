@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
-import { CounterComponent } from './counter/counter.component';
+import { CounterComponent } from './features/counter/component/counter.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/counter', pathMatch: 'full' },
   { path: 'counter', component: CounterComponent },
   {
     path: 'vatavaran',
-    loadComponent: () =>
-      import('./weather/weather.component').then((m) => m.WeatherComponent),
+    loadChildren: () =>
+      import('./features/weather/weather.module').then((m) => m.WeatherModule),
   },
 ];

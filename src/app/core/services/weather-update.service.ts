@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { WeatherCity } from '../reusabel-components/weather-city.interface';
+import { WeatherCity } from '../models/weather-city.interface';
 
 @Injectable({
   providedIn: 'root'

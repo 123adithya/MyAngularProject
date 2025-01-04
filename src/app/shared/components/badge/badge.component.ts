@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { BadgeStyle } from '../types';
+import { BadgeStyle } from '../../../core/models/types';
 
 @Component({
   selector: 'app-badge',

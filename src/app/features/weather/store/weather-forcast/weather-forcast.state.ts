@@ -1,4 +1,5 @@
-import { WeatherForcast } from "../../reusabel-components/weather-forcast.interface";
+import { WeatherForcast } from "../../../../core/models/weather-forcast.interface";
+
 
 export interface WeatherForcastState {
     lastWeatherForcastValues: WeatherForcast  | null;

@@ -1,17 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { WeatherForcast } from '../../reusabel-components/weather-forcast.interface';
 import { CommonModule } from '@angular/common';
-import { ButtonComponent } from '../../reusabel-components/button/button.component';
-import { ButtonTypeEnum } from '../../reusabel-components/enum';
 import { Store } from '@ngrx/store';
 import { NavigationStart, Router } from '@angular/router';
-import { setLastWeatherForcastValue } from '../../ngrx-store/weather-forcast/weather-forcast.actions';
 import { Observable } from 'rxjs';
-import { WeatherForcastState } from '../../ngrx-store/weather-forcast/weather-forcast.state';
+import { SharedModule } from '../../../shared/shared.module';
+import { ButtonTypeEnum } from '../../../core/models/enum';
+import { WeatherForcast } from '../../../core/models/weather-forcast.interface';
+import { WeatherForcastState } from '../store/weather-forcast/weather-forcast.state';
+import { setLastWeatherForcastValue } from '../store/weather-forcast/weather-forcast.actions';
 
 @Component({
   selector: 'app-weather-forcast',
-  imports: [CommonModule, ButtonComponent],
+  imports: [CommonModule, SharedModule],
   templateUrl: './weather-forcast.component.html',
   styleUrl: './weather-forcast.component.scss'
 })

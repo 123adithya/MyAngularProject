@@ -5,6 +5,6 @@ import { resetLastWeatherValue, setLastWeatherValue } from './weather.actions';
 
 export const weatherReducer = createReducer(
   initialState,
-  on(setLastWeatherValue, (state, { weather }) => ({ ...state, lastWeatherValues: weather })),
+  on(setLastWeatherValue, (state, { weather, selectedWeather }) => ({ ...state, lastWeatherValues: weather , lastSelectedWeather: selectedWeather})),
   on(resetLastWeatherValue, (state) => ({ ...state, lastWeatherValues: null }))
 );
