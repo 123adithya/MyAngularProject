@@ -1,13 +1,14 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { RouteConfigLoadEnd, RouteConfigLoadStart, Router, RouterModule, RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { BadgeTypeEnum } from './core/models/enum';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { CounterNumberService } from './core/services/counter-number.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule, SharedModule, CoreModule],
+  imports: [RouterOutlet, RouterModule, SharedModule, CoreModule, HttpClientModule],
   providers:[CounterNumberService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

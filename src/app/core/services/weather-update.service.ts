@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { WeatherCity } from '../models/weather-city.interface';
+import { WeatherForcast } from '../models/weather-forcast.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +16,12 @@ export class WeatherUpdateService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getWeatherByCity(cityName: string): Observable<any> {
+  getWeatherByCity(cityName: string): Observable<WeatherCity> {
     const params = {
       q: cityName,
       appid: this.apiKey
     };
-    return this.httpClient.get(this.apiWeatherUrl, { params }).pipe(
+    return this.httpClient.get<WeatherCity>(this.apiWeatherUrl, { params }).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
           console.error('City not found');
@@ -30,12 +31,12 @@ export class WeatherUpdateService {
     );;
   }
 
-  getWeatherReportForcast(city: WeatherCity): Observable<any> {
+  getWeatherReportForcast(city: WeatherCity): Observable<WeatherForcast> {
       const params = {
         lat: city.coord.lat,
         lon: city.coord.lon,
         appid: this.apiKey
       };
-      return this.httpClient.get(this.apiforecastUrl, { params });
+      return this.httpClient.get<WeatherForcast>(this.apiforecastUrl, { params });
     }
   }
