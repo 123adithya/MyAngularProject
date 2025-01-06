@@ -2,7 +2,7 @@
 export default {
   bootstrap: () => import('./main.server.mjs').then(m => m.default),
   inlineCriticalCss: true,
-  baseHref: '/',
+  baseHref: '/MyAngularProject/',
   locale: undefined,
   routes: [
   {
@@ -20,10 +20,10 @@ export default {
   }
 ],
   assets: {
-    'index.csr.html': {size: 4982, hash: 'c7877cfe4d3e717829dfabe58df7141ef54542736fecd5f9a45ab0c9c00b5130', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 1081, hash: '4b7841cf26799869614ce72a7bdb6d331cb106e046fde0017933fec6fd645f06', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
-    'MyAngularProject/vatavaran/index.html': {size: 18881, hash: '75512ca71cc0d4e9e7dc8fbaa903c7d788e27436e812a9cda2a414992879069d', text: () => import('./assets-chunks/MyAngularProject_vatavaran_index_html.mjs').then(m => m.default)},
-    'MyAngularProject/counter/index.html': {size: 13910, hash: '190517b9f3017907d04239f762cc55c65a2dd082cba010aebdafe746e6a66192', text: () => import('./assets-chunks/MyAngularProject_counter_index_html.mjs').then(m => m.default)},
+    'index.csr.html': {size: 4982, hash: 'd8990e8198e2ddfb8a8309a709e2b85466c97f5172ecf6e167238e5bf59be9bb', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 1081, hash: '3cba904d3cb838b4816417acab502ac4e0f5510f410ac46b0ec4afa3f9cd3088', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    'counter/index.html': {size: 13910, hash: 'c96de71d9627b5393163940058b4529e218c82c0ff1568e98a60f09d5880921a', text: () => import('./assets-chunks/counter_index_html.mjs').then(m => m.default)},
+    'vatavaran/index.html': {size: 20215, hash: '655dfc1ea2e78166ff584e037a63d8d99320d7834f50740d2da24be2ddcf1d7a', text: () => import('./assets-chunks/vatavaran_index_html.mjs').then(m => m.default)},
     'styles-DZ6UBGXD.css': {size: 231612, hash: 'B2Fy9V+bfZo', text: () => import('./assets-chunks/styles-DZ6UBGXD_css.mjs').then(m => m.default)}
   },
 };
